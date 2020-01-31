@@ -59,40 +59,32 @@ print(str[substr])
 '''
 
 file = "C:/Users/LLIU01/OneDrive - Danaher/Li/1-Projects/7- BioInformatics/dna2.fasta"
+
+def findframe(myseq):
+    start = -1
+    stop = -1
+    for i in range(1,len(myseq)):
+        frame = myseq[i:i+3]
+        if frame == 'ATG':
+            start = i
+            break
+        i = i+3
+    for i in range(start+3,len(myseq)):
+        frame = myseq[i:i+3]
+        if frame == 'TAA' or frame == 'TAG' or frame == 'TGA':
+            stop = i+2
+            break
+        i = i+3
+    length = stop - start
+    print(length)
+
 def findORF(myfile):
     for seq_record in SeqIO.parse(myfile, "fasta"):
         seqs = str(seq_record.seq)
-        print(seqs)
-        start = -1
-        stop = -1
-        for i in range(1, len(seqs)):
-            frame = st[i:i+3]
-            if frame == 'ATG':
-                start = i+1
-                break
-            i = i+3
-        for i in range(start+2, len(seqs)):
-            frame = st[i:i+3]
-            if frame == 'TAA' or frame == 'TAG' or frame == 'TGA':
-                stop = i+1
-                break
-            i = i+3
-        print(start, stop)
+        seqs_rev_com = str(seq_record.reverse_complement().seq)
+        print(seq_record.id)
+        #print(seqs)
+        findframe(seqs)
+        findframe(seqs_rev_com)
+        
 findORF(file)
-
-st = 'GCGGTCCCGGCGCCGCAGGCCGTCCGGCTCCTGCAGCGCGCCGAACCGGGTCTCGCGGTGATTGCCCAGCGTACCGAGATGCGCCCGGCCTGGGCCGTGATGGCGCAGTGCGGCC'
-
-for i in range(1,len(st)):
-    frame = st[i:i+3]
-    if frame == 'ATG':
-        start = i+1
-        print(start)
-        break
-    i = i+3
-for i in range(start+2,len(st)):
-    frame = st[i:i+3]
-    if frame == 'TAA' or frame == 'TAG' or frame == 'TGA':
-        stop = i+1
-        print(stop)
-        break
-    i = i+3
